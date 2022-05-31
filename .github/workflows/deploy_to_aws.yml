@@ -1,0 +1,16 @@
+name: Push-to-EC2
+on: [push]
+jobs:
+  build-it:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.EC2_INSTANCE }}
+          REMOTE_USER: "ec2-user"
+          TARGET: "/home/ec2-user/TicketGenerationService"
